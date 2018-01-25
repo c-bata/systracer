@@ -2,6 +2,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -11,10 +12,15 @@ import (
 )
 
 func main() {
+	var outputSummary bool
+	flag.BoolVar(&outputSummary, "summary", false, "If true, just output the summary")
+	flag.Parse()
+
 	var regs syscall.PtraceRegs
 	var ss = systracer.NewCounter()
 
-	cmd := exec.Command(os.Args[1], os.Args[2:]...)
+	args := flag.Args()
+	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -38,8 +44,10 @@ func main() {
 				break
 			}
 
-			name, _ := systracer.GetSyscallName("x86", int(regs.Orig_eax))
-			fmt.Printf("\t%s\n", name)
+			if !outputSummary {
+				name, _ := systracer.GetSyscallName("x86", int(regs.Orig_eax))
+				fmt.Printf("\t%s\n", name)
+			}
 
 			ss.Inc(regs.Orig_eax)
 		}
@@ -56,6 +64,8 @@ func main() {
 
 		exit = !exit
 	}
-	fmt.Println("Summary:")
-	ss.Print()
+	if outputSummary {
+		fmt.Println("Summary:")
+		ss.Print()
+	}
 }
