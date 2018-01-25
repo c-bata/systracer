@@ -14,7 +14,7 @@ func NewCounter() SyscallCounter {
 	return make(SyscallCounter, maxSyscalls)
 }
 
-func (s SyscallCounter) Inc(syscallID int32) error {
+func (s SyscallCounter) Inc(syscallID int) error {
 	if syscallID > maxSyscalls {
 		return fmt.Errorf("invalid syscall ID (%x)", syscallID)
 	}
@@ -27,7 +27,10 @@ func (s SyscallCounter) Print() {
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 8, ' ', tabwriter.AlignRight|tabwriter.Debug)
 	for k, v := range s {
 		if v > 0 {
-			name, _ := GetSyscallName("x86", k)
+			name, err := GetSyscall(k)
+			if err != nil {
+				panic(err)
+			}
 			fmt.Fprintf(w, "%d\t%s\n", v, name)
 		}
 	}
@@ -35,6 +38,9 @@ func (s SyscallCounter) Print() {
 }
 
 func (s SyscallCounter) GetName(syscallID int) Syscall {
-	name, _ := GetSyscallName("x86", syscallID)
+	name, err := GetSyscall(syscallID)
+	if err != nil {
+		panic(err)
+	}
 	return name
 }

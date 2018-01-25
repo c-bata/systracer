@@ -1,15 +1,7 @@
+// +build linux,386
 package systracer
 
-import "errors"
-
-var ErrSyscallUndefined = errors.New("undefined syscall")
-
-type x86SyscallTableRow struct {
-	Syscall Syscall
-	Number  int
-}
-
-var x86SyscallTable = []x86SyscallTableRow{
+var syscallTable = []tableRow{
 	{SyscallLlseek, 140},
 	{SyscallNewselect, 142},
 	{SyscallSysctl, 149},
@@ -442,13 +434,4 @@ var x86SyscallTable = []x86SyscallTableRow{
 	{SyscallWaitpid, 7},
 	{SyscallWrite, 4},
 	{SyscallWritev, 146},
-}
-
-func GetX86SyscallName(num int) (Syscall, error) {
-	for i := range x86SyscallTable {
-		if x86SyscallTable[i].Number == num {
-			return x86SyscallTable[i].Syscall, nil
-		}
-	}
-	return SyscallUndefined, ErrSyscallUndefined
 }

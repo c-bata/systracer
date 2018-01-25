@@ -45,11 +45,11 @@ func main() {
 			}
 
 			if !outputSummary {
-				name, _ := systracer.GetSyscallName("x86", int(regs.Orig_eax))
+				name, _ := systracer.GetSyscall(int(regs.Orig_eax))
 				fmt.Printf("\t%s\n", name)
 			}
 
-			ss.Inc(regs.Orig_eax)
+			ss.Inc(int(regs.Orig_eax))
 		}
 
 		err = syscall.PtraceSyscall(pid, 0)

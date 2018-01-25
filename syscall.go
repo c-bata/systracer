@@ -1,6 +1,28 @@
 package systracer
 
+import "errors"
+
+var (
+	ErrUndefinedSyscall = errors.New("undefined syscall")
+)
+
+// GetSyscall returns Syscall variable from system call number.
+func GetSyscall(num int) (Syscall, error) {
+	for i := range syscallTable {
+		if syscallTable[i].Number == num {
+			return syscallTable[i].Syscall, nil
+		}
+	}
+	return SyscallUndefined, ErrUndefinedSyscall
+}
+
+// Syscall represents a system call name.
 type Syscall string
+
+type tableRow struct {
+	Syscall Syscall
+	Number  int
+}
 
 const (
 	SyscallLlseek                 = "llseek"
