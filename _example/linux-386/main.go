@@ -38,6 +38,7 @@ func main() {
 	exit := true
 
 	for {
+		// because tracee receives SIGTRAP twice
 		if exit {
 			err = syscall.PtraceGetRegs(pid, &regs)
 			if err != nil {
