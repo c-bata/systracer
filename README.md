@@ -3,27 +3,10 @@
 Yet another system call tracer written in Go.
 This is a sample repository for my talk about "How to develop system call tracer." at Aizu University.
 
+
 ## Usage
 
 Currently, this tool supported Linux/x86 only. Usage is like this:
-
-```console
-$ ./systracer-linux-386 ./hello
-Wait returned: stop signal: trace/breakpoint trap
-	execve
-	uname
-	brk
-	brk
-	set_thread_area
-	brk
-	brk
-	fstat64
-	mmap2
-Hello World! 1 ./hello
-	write
-```
-
-`--summary` option is available like following:
 
 ```console
 $ ./systracer-linux-386 --summary ./hello
@@ -38,3 +21,10 @@ Summary:
         1|fstat64
         1|set_thread_area
 ```
+
+## How to work
+
+[![how-to-work](https://github.com/c-bata/assets/raw/master/systrace/how-to-trace-system-calls.png)](#)
+
+So if this implemented by C, like [_example/linux-386-c/main.c](https://github.com/c-bata/systrace/blob/master/_example/linux-386-c/main.c).
+
