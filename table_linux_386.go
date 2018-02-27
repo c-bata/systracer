@@ -1,4 +1,5 @@
 // +build linux,386
+
 package systracer
 
 var syscallTable = []tableRow{

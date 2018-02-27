@@ -26,5 +26,4 @@ Summary:
 
 [![how-to-work](https://github.com/c-bata/assets/raw/master/systrace/how-to-trace-system-calls.png)](#)
 
-So if this implemented by C, like [_example/linux-386-c/main.c](https://github.com/c-bata/systrace/blob/master/_example/linux-386-c/main.c).
-
+C implementation is [_example/linux-386-c/main.c](https://github.com/c-bata/systrace/blob/master/_example/linux-386-c/main.c).
